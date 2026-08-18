@@ -46,6 +46,14 @@
   function setPhase(text){
     var node=document.getElementById("viral-phase");if(node)node.textContent=text;
   }
+  function setGuideStatus(text){
+    var node=document.getElementById("result-guide-status");if(node)node.textContent=text;
+  }
+  function setPublicationMessage(title,copy){
+    var titleNode=document.getElementById("publication-title"),copyNode=document.getElementById("publication-copy");
+    if(titleNode)titleNode.textContent=title;
+    if(copyNode)copyNode.textContent=copy;
+  }
   function setStats(views,likes){
     var viewNode=document.getElementById("views-count"),likeNode=document.getElementById("like-count");
     if(viewNode)viewNode.textContent=formatCount(views);
@@ -92,8 +100,11 @@
       if(bar)bar.style.width=(barProgress*100)+"%";
       if(views>=1000)milestone(1000);if(views>=10000)milestone(10000);if(views>=100000)milestone(100000);
       if(progress<1)growthFrame=requestAnimationFrame(tick);
-     else{
-       setStats(stats.views,stats.likes);if(bar)bar.style.width="100%";setPhase("● ВИРУСНЫЙ ФИНИШ");
+      else{
+        setStats(stats.views,stats.likes);if(bar)bar.style.width="100%";setPhase("● ВИРУСНЫЙ ФИНИШ");
+        setGuideStatus("Разгон завершён! Отправь мем другу или сними новый.");
+        setPublicationMessage("РАЗГОН ЗАВЕРШЁН!", "Твой мем собрал свою первую волну реакций. Что сделаем дальше?");
+        var nextButton=document.getElementById("new-meme-button");if(nextButton)nextButton.classList.add("is-recommended");
        if(api.recordPost)api.recordPost(stats);
      }
     }
@@ -104,6 +115,9 @@
     ctx.clearRect(0,0,result.width,result.height);ctx.drawImage(source,0,0);
     api.applyEffects(document.getElementById("reel-video-wrap"),api.state.effects);
     var stats=targetStats(),commentTexts=commentsFor(stats.views),comments=document.getElementById("fake-comments");
+    setPublicationMessage("ТВОЙ ТРЕНД ОПУБЛИКОВАН!", "Смотри, как растут просмотры. Потом отправь мем другу или сними новый.");
+    setGuideStatus("Мем уже в ленте — просмотры разгоняются.");
+    var nextButton=document.getElementById("new-meme-button");if(nextButton)nextButton.classList.remove("is-recommended");
     if(comments){
       clearInterval(commentTimer);
       var cursor=0;

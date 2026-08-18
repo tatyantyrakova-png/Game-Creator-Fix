@@ -18,7 +18,7 @@
     document.getElementById("tutorial-start").addEventListener("click",function(){api.closeTutorial();api.showScreen("editor");api.renderEditor();api.tap();});
     document.getElementById("editor-home").addEventListener("click",function(){api.showScreen("menu");api.tap();});
     document.getElementById("result-back").addEventListener("click",function(){api.showScreen("editor");api.tap();});
-    document.getElementById("capture-button").addEventListener("click",function(){api.showScreen("result");api.renderResult();api.startGrowth();api.tap();});
+     document.getElementById("capture-button").addEventListener("click",function(){api.showScreen("result");api.renderResult();api.startGrowth();api.toast("ТРЕНД ОПУБЛИКОВАН! ЛИСТАЙ НИЖЕ — ТАМ ДЕЙСТВИЯ.");api.tap();});
      document.getElementById("new-meme-button").addEventListener("click",function(){
        var startNext=function(){api.resetState();api.showScreen("editor");api.renderEditor();api.tap();};
        if(api.showInterstitial)api.showInterstitial(startNext);else startNext();
