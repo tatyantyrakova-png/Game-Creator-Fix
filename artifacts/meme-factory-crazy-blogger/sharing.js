@@ -3,7 +3,6 @@
   window.MemeFactory=window.MemeFactory||{};var api=window.MemeFactory;
   api.initSharing=function(){
     document.getElementById("share-button").addEventListener("click",api.openShare);
-    document.getElementById("result-share").addEventListener("click",api.openShare);
     document.getElementById("share-close").addEventListener("click",api.closeShare);
     document.getElementById("copy-button").addEventListener("click",function(){
       var text="https://memefactory.fun/m/"+(api.state.character||"meme")+"-2026", status=document.getElementById("share-status");

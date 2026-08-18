@@ -46,13 +46,8 @@
   function setPhase(text){
     var node=document.getElementById("viral-phase");if(node)node.textContent=text;
   }
-  function setGuideStatus(text){
-    var node=document.getElementById("result-guide-status");if(node)node.textContent=text;
-  }
-  function setPublicationMessage(title,copy){
-    var titleNode=document.getElementById("publication-title"),copyNode=document.getElementById("publication-copy");
-    if(titleNode)titleNode.textContent=title;
-    if(copyNode)copyNode.textContent=copy;
+  function setGrowthHint(text){
+    var node=document.getElementById("growth-next-copy");if(node)node.textContent=text;
   }
   function setStats(views,likes){
     var viewNode=document.getElementById("views-count"),likeNode=document.getElementById("like-count");
@@ -64,16 +59,17 @@
   api.stopGrowth=function(){
     cancelAnimationFrame(growthFrame);clearInterval(growthTimer);clearTimeout(phaseTimer1);clearTimeout(phaseTimer2);
     growthFrame=0;growthTimer=0;phaseTimer1=0;phaseTimer2=0;milestones=[];
-    var badge=document.getElementById("viral-badge"),screen=document.getElementById("result-screen"),host=document.getElementById("push-notifications"),stamp=document.getElementById("hype-stamp"),video=document.getElementById("reel-video-wrap");
+    var badge=document.getElementById("viral-badge"),screen=document.getElementById("result-screen"),growth=document.getElementById("viral-growth"),host=document.getElementById("push-notifications"),stamp=document.getElementById("hype-stamp"),video=document.getElementById("reel-video-wrap");
     if(badge)badge.hidden=true;if(stamp)stamp.hidden=true;
     if(screen)screen.classList.remove("legendary","milestone-flash","viral-finale");
+    if(growth)growth.classList.remove("growth-complete");
     if(video)video.classList.remove("milestone-pop","viral-shake");
     if(host)host.innerHTML="";setPhase("● ЗАГРУЗКА...");
   };
   api.startGrowth=function(){
     api.stopGrowth();
     var stats=targetStats(),start=performance.now(),duration=8000,intermediate=Math.max(120,stats.views*.32);
-    var countNode=document.getElementById("views-count"),scoreNode=document.getElementById("chaos-score"),bar=document.getElementById("growth-progress"),badge=document.getElementById("viral-badge"),screen=document.getElementById("result-screen"),stamp=document.getElementById("hype-stamp"),video=document.getElementById("reel-video-wrap");
+     var countNode=document.getElementById("views-count"),scoreNode=document.getElementById("chaos-score"),bar=document.getElementById("growth-progress"),badge=document.getElementById("viral-badge"),screen=document.getElementById("result-screen"),growth=document.getElementById("viral-growth"),stamp=document.getElementById("hype-stamp"),video=document.getElementById("reel-video-wrap");
     if(scoreNode)scoreNode.textContent="ВИРУСНОСТЬ "+formatCount(stats.score);
     if(bar)bar.style.width="0%";if(badge){badge.textContent="👑 МЕМ-БОГ";badge.hidden=stats.views<=100000;}
     if(screen)screen.classList.toggle("legendary",stats.views>100000);
@@ -102,8 +98,8 @@
       if(progress<1)growthFrame=requestAnimationFrame(tick);
       else{
         setStats(stats.views,stats.likes);if(bar)bar.style.width="100%";setPhase("● ВИРУСНЫЙ ФИНИШ");
-        setGuideStatus("Разгон завершён! Отправь мем другу или сними новый.");
-        setPublicationMessage("РАЗГОН ЗАВЕРШЁН!", "Твой мем собрал свою первую волну реакций. Что сделаем дальше?");
+        setGrowthHint("РАЗГОН ЗАВЕРШЁН! Выбирай: отправить мем или снять новый.");
+        if(growth)growth.classList.add("growth-complete");
         var nextButton=document.getElementById("new-meme-button");if(nextButton)nextButton.classList.add("is-recommended");
        if(api.recordPost)api.recordPost(stats);
      }
@@ -115,8 +111,7 @@
     ctx.clearRect(0,0,result.width,result.height);ctx.drawImage(source,0,0);
     api.applyEffects(document.getElementById("reel-video-wrap"),api.state.effects);
     var stats=targetStats(),commentTexts=commentsFor(stats.views),comments=document.getElementById("fake-comments");
-    setPublicationMessage("ТВОЙ ТРЕНД ОПУБЛИКОВАН!", "Смотри, как растут просмотры. Потом отправь мем другу или сними новый.");
-    setGuideStatus("Мем уже в ленте — просмотры разгоняются.");
+    setGrowthHint("Мем опубликован — просмотры разгоняются.");
     var nextButton=document.getElementById("new-meme-button");if(nextButton)nextButton.classList.remove("is-recommended");
     if(comments){
       clearInterval(commentTimer);
@@ -143,6 +138,5 @@
   api.initTikTok=function(){
     document.querySelectorAll(".engage-button").forEach(function(button){button.addEventListener("click",function(){button.classList.toggle("is-pressed");api.tap();if(button.dataset.testid==="button-like"){button.setAttribute("aria-pressed",button.classList.contains("is-pressed")?"true":"false");button.setAttribute("aria-label",button.classList.contains("is-pressed")?"Убрать лайк":"Поставить лайк");button.setAttribute("title",button.classList.contains("is-pressed")?"Убрать лайк":"Поставить лайк");api.toast(button.classList.contains("is-pressed")?"Лайк улетел!":"Лайк снят");}else if(button.dataset.testid==="button-comments")api.toast("Комментарии уже кричат от восторга!");});});
     document.getElementById("follow-button").addEventListener("click",function(){this.classList.toggle("is-following");this.textContent=this.classList.contains("is-following")?"ВЫ ПОДПИСАНЫ":"ПОДПИСАТЬСЯ";api.tap();});
-    document.getElementById("rail-share").addEventListener("click",api.openShare);
   };
 })();

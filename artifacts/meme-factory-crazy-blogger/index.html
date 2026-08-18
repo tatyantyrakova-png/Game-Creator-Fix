@@ -146,8 +146,7 @@
       <section id="result-screen" class="screen result-screen" aria-label="Опубликованный мем">
         <header class="result-header">
           <button class="icon-button light-icon result-back-button" id="result-back" aria-label="Вернуться в редактор" title="Вернуться в редактор" data-testid="button-result-back"><svg class="home-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="m5 14 11-9 11 9"></path><path d="M8.5 12.5v13h15v-13"></path><path d="M13 25.5v-7h6v7"></path></svg><span>К РЕДАКТОРУ</span></button>
-          <div class="result-brand">МЕМ-ФАБРИКА <span>/ LIVE</span></div>
-           <button class="share-mini" id="result-share" aria-label="Отправить результат другу" title="Отправить результат другу" data-testid="button-result-share"><svg class="share-send-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="m5 15 22-10-7 22-5-9Z"></path><path d="M15 18 27 5"></path></svg></button>
+           <div class="result-brand">МЕМ-ФАБРИКА <span>/ LIVE</span></div>
         </header>
         <div class="reel-layout">
           <div class="reel-video-wrap" id="reel-video-wrap">
@@ -162,15 +161,7 @@
             <div class="avatar avatar-big">МФ</div>
              <button class="engage-button" data-testid="button-like" aria-label="Поставить лайк" title="Поставить лайк"><span class="engage-icon" aria-hidden="true"><svg viewBox="0 0 32 32" role="img"><path d="M9.1 27.2H5.7A2.7 2.7 0 0 1 3 24.5v-9.1a2.7 2.7 0 0 1 2.7-2.7h3.4m0 14.5h13.2c1.2 0 2.3-.8 2.6-2l2-8.6a2.7 2.7 0 0 0-2.6-3.3h-7.1l.7-4.1a3.8 3.8 0 0 0-3.7-4.4l-5.1 9.1v10.5"></path></svg></span><b id="like-count">1</b></button>
              <button class="engage-button" data-testid="button-comments" aria-label="Открыть комментарии" title="Открыть комментарии"><span class="engage-icon" aria-hidden="true"><svg viewBox="0 0 32 32" role="img"><path d="M6.2 5.5h19.6a2.7 2.7 0 0 1 2.7 2.7v12.2a2.7 2.7 0 0 1-2.7 2.7H16l-6.4 4.4v-4.4H6.2a2.7 2.7 0 0 1-2.7-2.7V8.2a2.7 2.7 0 0 1 2.7-2.7Z"></path><path d="M9.5 13h.1m6.4 0h.1m6.4 0h.1" class="icon-dots"></path></svg></span><b>8.4K</b></button>
-              <button class="engage-button" id="rail-share" data-testid="button-rail-share" aria-label="Отправить результат другу" title="Отправить результат другу"><span class="engage-icon" aria-hidden="true"><svg viewBox="0 0 32 32" role="img"><path d="m5 15 22-10-7 22-5-9Z"></path><path d="M15 18 27 5"></path></svg></span><b>ОТПРАВИТЬ ДРУГУ</b></button>
           </aside>
-        </div>
-        <div class="publication-banner" id="publication-banner" role="status" aria-live="polite">
-          <div class="publication-mark" aria-hidden="true">✓</div>
-          <div>
-            <strong id="publication-title">ТВОЙ ТРЕНД ОПУБЛИКОВАН!</strong>
-            <p id="publication-copy">Смотри, как растут просмотры. Потом отправь мем другу или сними новый.</p>
-          </div>
         </div>
         <div class="result-info">
           <div class="result-user"><span class="verified-dot">✓</span> @memelord2026 <button class="follow-button" id="follow-button">ПОДПИСАТЬСЯ</button></div>
@@ -180,19 +171,8 @@
           <div class="viral-growth-top"><span class="chaos-chip" id="chaos-score">ВИРУСНОСТЬ 10K</span><span id="viral-phase" class="growth-live">● ЗАГРУЗКА...</span></div>
           <strong id="views-count">15</strong><span class="views-label">ПРОСМОТРОВ</span>
           <div class="growth-track"><span id="growth-progress"></span></div>
+          <p class="growth-next-copy" id="growth-next-copy">Мем опубликован — просмотры разгоняются.</p>
         </div>
-        <section class="result-guide" id="result-guide" aria-labelledby="result-guide-title">
-          <div class="result-guide-heading">
-            <span>✦ СЛЕДУЮЩИЙ ШАГ</span>
-            <strong id="result-guide-title">ЧТО ДЕЛАТЬ ДАЛЬШЕ?</strong>
-          </div>
-          <ol>
-            <li><span>01</span><b>Дождись разгона просмотров</b></li>
-            <li><span>02</span><b>Поставь лайк или отправь мем другу</b></li>
-            <li><span>03</span><b>Нажми «Новый мем» для следующего тренда</b></li>
-          </ol>
-          <p id="result-guide-status">Мем уже в ленте — просмотры разгоняются.</p>
-        </section>
         <div class="result-actions">
           <button class="button button-primary" id="share-button" data-testid="button-share"><svg class="ui-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="m5 15 22-10-7 22-5-9Z"></path><path d="M15 18 27 5"></path></svg> ОТПРАВИТЬ ДРУГУ</button>
           <button class="button button-ghost" id="new-meme-button" data-testid="button-new-meme"><svg class="ui-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M26 14a10 10 0 1 0 1 6"></path><path d="M26 6v8h-8"></path></svg> НОВЫЙ МЕМ</button>
