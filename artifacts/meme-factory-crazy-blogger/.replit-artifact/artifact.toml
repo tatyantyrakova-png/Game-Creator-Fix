@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Мем-Фабрика — Безумный Блогер"
+description = "Браузерная игра о создании вирусных мемов: игрок собирает ролики, выбирает безопасные решения и развивает блогерский канал."
+version = "1.0.0"
+id = "artifacts/meme-factory-crazy-blogger"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19099
+
+[services.development]
+run = "pnpm --filter @workspace/meme-factory-crazy-blogger run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/meme-factory-crazy-blogger", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/meme-factory-crazy-blogger/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19099"
+BASE_PATH = "/"

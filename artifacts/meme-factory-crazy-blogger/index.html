@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#5b2ca0">
+    <meta name="description" content="Мем-Фабрика — собери героя, реквизит и эффект, чтобы запустить свой вирусный мем.">
+    <title>МЕМ-ФАБРИКА — конструктор вирусных мемов</title>
+    <script src="https://yandex.ru/games/sdk/v2"></script>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%235b2ca0'/%3E%3Ctext x='32' y='45' text-anchor='middle' font-size='38'%3E😂%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <main id="app" class="app-shell">
+      <section id="menu-screen" class="screen menu-screen is-active" aria-label="Главное меню">
+        <div class="top-sticker">ФАБРИКА <span>№01</span></div>
+        <button class="settings-button settings-menu-button" id="menu-settings" aria-label="Настройки" title="Настройки"><svg class="settings-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M13 4h6l1 4 3 2 4-1 3 5-3 3v4l3 3-3 5-4-1-3 2-1 4h-6l-1-4-3-2-4 1-3-5 3-3v-4l-3-3 3-5 4 1 3-2Z"></path><circle cx="16" cy="17" r="4"></circle></svg></button>
+        <button class="profile-menu-button" id="menu-profile" aria-label="Открыть профиль канала" title="Открыть профиль канала">
+          <span class="profile-menu-avatar" id="menu-profile-avatar">М</span>
+           <span class="profile-menu-copy"><em>ПРОФИЛЬ КАНАЛА</em><b id="menu-profile-name">МЕМЛОРД</b><small id="menu-profile-followers">0 подписчиков</small></span>
+        </button>
+        <div class="menu-particles" aria-hidden="true">
+          <span class="float-emoji e1">😂</span><span class="float-emoji e2">🔥</span>
+          <span class="float-emoji e3">💀</span><span class="float-emoji e4">👽</span>
+          <span class="scribble s1">WOW</span><span class="scribble s2">ЛОЛ!</span>
+        </div>
+        <div class="menu-hero">
+          <div class="eyebrow">САМЫЙ СТРАННЫЙ КОНСТРУКТОР</div>
+          <h1>МЕМ-<br><span>ФАБРИКА</span></h1>
+          <div class="subtitle">Безумный Блогер</div>
+          <p class="menu-copy">Смешай героя, предметы и эффект.<br>Сними тренд, которого никто не ждал.</p>
+          <div class="menu-actions">
+            <button class="button button-primary button-play" id="play-button" data-testid="button-play">▶ ИГРАТЬ</button>
+            <button class="button button-profile-entry" id="menu-profile-action" data-testid="button-profile">МОЙ ПРОФИЛЬ <span>→</span></button>
+             <button class="button button-ghost" id="how-button" data-testid="button-how">КАК ИГРАТЬ</button>
+          </div>
+        </div>
+        <div class="menu-footer"><span>6+ • СБОРКА МЕМА • ЭФФЕКТЫ • ВИРУСНЫЙ РЕЙТИНГ</span><span>v 2.026</span></div>
+      </section>
+
+      <section id="editor-screen" class="screen editor-screen" aria-label="Редактор мема">
+        <header class="editor-header">
+          <button class="icon-button" id="editor-home" aria-label="В меню" data-testid="button-editor-home">⌂</button>
+          <div class="progress-copy"><span>ТВОРЧЕСКИЙ РЕЖИМ</span><strong>Шаг <b id="step-number">1</b>/4</strong></div>
+          <div class="editor-actions"><button class="settings-button" id="editor-settings" aria-label="Настройки" title="Настройки"><svg class="settings-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M13 4h6l1 4 3 2 4-1 3 5-3 3v4l3 3-3 5-4-1-3 2-1 4h-6l-1-4-3-2-4 1-3-5 3-3v-4l-3-3 3-5 4 1 3-2Z"></path><circle cx="16" cy="17" r="4"></circle></svg></button><button class="profile-header-button" id="editor-profile" aria-label="Открыть профиль канала" title="Открыть профиль канала"><span class="profile-header-avatar" id="editor-profile-avatar">М</span><span class="profile-header-copy"><em>КАНАЛ</em><b>ПРОФИЛЬ</b></span></button><button class="reset-button" id="reset-button" data-testid="button-reset">СБРОС <span>↺</span></button></div>
+        </header>
+        <div class="editor-layout">
+          <div class="canvas-column">
+            <div class="canvas-label">
+              <div class="canvas-label-copy"><span class="canvas-live-dot"></span><span>ТВОЙ КАДР</span><small>СЪЁМОЧНАЯ ПЛОЩАДКА</small></div>
+              <i id="layer-count">0/5 предметов</i>
+            </div>
+            <div class="shot-board" aria-label="Съёмочный план">
+              <div class="shot-board-heading"><span>СЦЕНАРИЙ КАДРА</span><small id="shot-board-status">ГОТОВ К СЪЁМКЕ</small></div>
+              <div class="shot-slots" id="shot-slots"></div>
+            </div>
+            <div class="caption-control">
+              <div class="caption-control-heading"><label for="caption-input">ТЕКСТ НА ЭКРАНЕ</label><small>до 48 символов</small></div>
+              <div class="caption-input-wrap">
+                <input id="caption-input" type="text" maxlength="48" autocomplete="off" placeholder="Напиши фразу для мема...">
+                <button id="caption-clear" type="button" aria-label="Очистить текст" title="Очистить текст">×</button>
+              </div>
+              <small class="caption-control-hint">Фраза появится прямо внутри кадра и сохранится в публикации.</small>
+            </div>
+            <div class="canvas-frame" id="canvas-frame">
+              <canvas id="meme-canvas" width="720" height="720" aria-label="Предпросмотр мема"></canvas>
+              <div class="canvas-corner corner-tl"></div><div class="canvas-corner corner-br"></div>
+              <div class="frame-stamp">REC <span></span></div>
+            </div>
+             <button class="button button-capture" id="capture-button" data-testid="button-capture">СНЯТЬ ТРЕНД <span>→</span></button>
+          </div>
+          <div class="picker-column">
+            <div class="tab-bar" role="tablist" aria-label="Категории">
+              <button class="tab is-selected" data-tab="backgrounds" role="tab" data-testid="tab-backgrounds"><span>▧</span> ФОНЫ</button>
+              <button class="tab" data-tab="characters" role="tab" data-testid="tab-characters"><span>☻</span> ГЕРОИ</button>
+              <button class="tab" data-tab="items" role="tab" data-testid="tab-items"><span>✦</span> ШТУКИ</button>
+              <button class="tab" data-tab="effects" role="tab" data-testid="tab-effects"><span>✹</span> ЭФФЕКТЫ</button>
+            </div>
+            <div class="picker-heading"><h2 id="picker-title">Выбери сцену</h2><span id="picker-hint">листай →</span></div>
+            <div id="picker-grid" class="picker-grid" role="tabpanel"></div>
+             <div class="rewarded-panel" id="rewarded-panel">
+               <div class="rewarded-copy"><span class="rewarded-kicker">БОНУСНЫЙ ЗАПУСК</span><b>Открыть секретный предмет</b><small id="rewarded-status">Посмотри короткое видео — награда появится только после просмотра.</small></div>
+               <button class="rewarded-button" id="rewarded-button" type="button">ОТКРЫТЬ</button>
+             </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="profile-screen" class="screen profile-screen" aria-label="Профиль блогера">
+        <header class="profile-header">
+          <button class="icon-button" id="profile-home" aria-label="В меню">⌂</button>
+          <div class="profile-header-title"><span>КАБИНЕТ БЛОГЕРА</span><strong>МОЙ ПРОФИЛЬ</strong></div>
+            <button class="settings-button" id="profile-settings" aria-label="Настройки" title="Настройки"><svg class="settings-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M13 4h6l1 4 3 2 4-1 3 5-3 3v4l3 3-3 5-4-1-3 2-1 4h-6l-1-4-3-2-4 1-3-5 3-3v-4l-3-3 3-5 4 1 3-2Z"></path><circle cx="16" cy="17" r="4"></circle></svg></button>
+        </header>
+        <main class="profile-content">
+          <section class="profile-hero-card">
+            <div class="profile-identity">
+              <button class="profile-avatar-large" id="profile-avatar-button" aria-label="Изменить цвет аватара"><span id="profile-avatar">М</span></button>
+              <div class="profile-identity-copy">
+                <span class="profile-kicker">ТВОЙ КАНАЛ</span>
+                <h1 id="profile-display-name">МЕМЛОРД</h1>
+                <p id="profile-level-copy">Уровень 1 · Новичок</p>
+              </div>
+            </div>
+            <div class="profile-xp">
+              <div><span>ОПЫТ БЛОГЕРА</span><b id="profile-xp-copy">0 / 100 XP</b></div>
+              <div class="profile-xp-track"><span id="profile-xp-bar"></span></div>
+            </div>
+            <button class="profile-edit-button" id="profile-edit-button">ИЗМЕНИТЬ НИК <span>↗</span></button>
+          </section>
+
+          <div class="profile-tabs" role="tablist" aria-label="Разделы профиля">
+            <button class="profile-tab is-selected" id="profile-tab-overview" data-profile-tab="overview" role="tab">ПРОФИЛЬ</button>
+            <button class="profile-tab" id="profile-tab-stats" data-profile-tab="stats" role="tab">СТАТИСТИКА</button>
+          </div>
+
+          <section class="profile-panel is-active" id="profile-overview-panel" data-profile-panel="overview">
+            <div class="profile-stat-grid">
+              <article class="profile-stat-card profile-stat-followers"><span>ПОДПИСЧИКИ</span><strong id="profile-followers">0</strong><small>игровая аудитория</small></article>
+              <article class="profile-stat-card"><span>УРОВЕНЬ</span><strong id="profile-level">1</strong><small id="profile-level-label">Новичок</small></article>
+              <article class="profile-stat-card"><span>МЕМОВ СОЗДАНО</span><strong id="profile-posts">0</strong><small>публикаций</small></article>
+              <article class="profile-stat-card"><span>ЛУЧШЕЕ ВИДЕО</span><strong id="profile-best-views">0</strong><small>просмотров</small></article>
+            </div>
+            <div class="profile-note"><span class="profile-note-mark">✦</span><p>Создавай мемы и выпускай их в тренд-ленту. Здесь растёт твой игровой канал — без подключения настоящих соцсетей.</p></div>
+          </section>
+
+          <section class="profile-panel" id="profile-stats-panel" data-profile-panel="stats">
+            <div class="profile-total-card">
+              <div><span>ВСЕГО ПРОСМОТРОВ</span><strong id="profile-total-views">0</strong></div>
+              <div class="profile-total-arrow">↗</div>
+            </div>
+            <div class="profile-stat-grid profile-stat-grid-small">
+              <article class="profile-stat-card"><span>ЛАЙКИ</span><strong id="profile-total-likes">0</strong><small>на всех мемах</small></article>
+              <article class="profile-stat-card"><span>КОММЕНТАРИИ</span><strong id="profile-total-comments">0</strong><small>реакций ленты</small></article>
+              <article class="profile-stat-card"><span>СРЕДНЯЯ ВИРУСНОСТЬ</span><strong id="profile-average-score">0</strong><small>за публикацию</small></article>
+              <article class="profile-stat-card"><span>ПОСЛЕДНИЙ МЕМ</span><strong id="profile-last-post">—</strong><small id="profile-last-post-meta">ещё не создан</small></article>
+            </div>
+            <div class="recent-posts">
+              <div class="recent-posts-heading"><span>ПОСЛЕДНИЕ ПУБЛИКАЦИИ</span><small id="profile-posts-count">0 записей</small></div>
+              <div id="profile-recent-posts" class="recent-posts-list"><p class="profile-empty">Сними первый тренд, и он появится здесь.</p></div>
+            </div>
+          </section>
+        </main>
+      </section>
+
+      <section id="result-screen" class="screen result-screen" aria-label="Опубликованный мем">
+        <header class="result-header">
+          <button class="icon-button light-icon" id="result-back" aria-label="Вернуться в редактор" title="Вернуться в редактор" data-testid="button-result-back"><svg class="home-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="m5 14 11-9 11 9"></path><path d="M8.5 12.5v13h15v-13"></path><path d="M13 25.5v-7h6v7"></path></svg></button>
+          <div class="result-brand">МЕМ-ФАБРИКА <span>/ LIVE</span></div>
+           <button class="share-mini" id="result-share" aria-label="Отправить результат другу" title="Отправить результат другу" data-testid="button-result-share"><svg class="share-send-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="m5 15 22-10-7 22-5-9Z"></path><path d="M15 18 27 5"></path></svg></button>
+        </header>
+        <div class="reel-layout">
+          <div class="reel-video-wrap" id="reel-video-wrap">
+            <canvas id="result-canvas" width="720" height="720" aria-label="Готовый мем"></canvas>
+            <div class="reel-gradient"></div>
+            <div class="reel-play" aria-hidden="true">▶</div>
+            <div id="hype-stamp" class="hype-stamp" hidden>💀 ХАЙП ИЛИ КРИНЖ?</div>
+            <div class="video-progress"><span></span></div>
+            <div class="music-ticker"><span>🎵</span> Original Sound - Мем-Фабрика</div>
+          </div>
+          <aside class="engagement-rail">
+            <div class="avatar avatar-big">МФ</div>
+             <button class="engage-button" data-testid="button-like" aria-label="Поставить лайк" title="Поставить лайк"><span class="engage-icon" aria-hidden="true"><svg viewBox="0 0 32 32" role="img"><path d="M9.1 27.2H5.7A2.7 2.7 0 0 1 3 24.5v-9.1a2.7 2.7 0 0 1 2.7-2.7h3.4m0 14.5h13.2c1.2 0 2.3-.8 2.6-2l2-8.6a2.7 2.7 0 0 0-2.6-3.3h-7.1l.7-4.1a3.8 3.8 0 0 0-3.7-4.4l-5.1 9.1v10.5"></path></svg></span><b id="like-count">1</b></button>
+             <button class="engage-button" data-testid="button-comments" aria-label="Открыть комментарии" title="Открыть комментарии"><span class="engage-icon" aria-hidden="true"><svg viewBox="0 0 32 32" role="img"><path d="M6.2 5.5h19.6a2.7 2.7 0 0 1 2.7 2.7v12.2a2.7 2.7 0 0 1-2.7 2.7H16l-6.4 4.4v-4.4H6.2a2.7 2.7 0 0 1-2.7-2.7V8.2a2.7 2.7 0 0 1 2.7-2.7Z"></path><path d="M9.5 13h.1m6.4 0h.1m6.4 0h.1" class="icon-dots"></path></svg></span><b>8.4K</b></button>
+              <button class="engage-button" id="rail-share" data-testid="button-rail-share" aria-label="Отправить результат другу" title="Отправить результат другу"><span class="engage-icon" aria-hidden="true"><svg viewBox="0 0 32 32" role="img"><path d="m5 15 22-10-7 22-5-9Z"></path><path d="M15 18 27 5"></path></svg></span><b>ОТПРАВИТЬ ДРУГУ</b></button>
+          </aside>
+        </div>
+        <div class="result-info">
+          <div class="result-user"><span class="verified-dot">✓</span> @memelord2026 <button class="follow-button" id="follow-button">ПОДПИСАТЬСЯ</button></div>
+          <p>жиза 😂 <strong>#мем</strong> <strong>#тренд</strong></p>
+        </div>
+        <div class="viral-growth" aria-live="polite">
+          <div class="viral-growth-top"><span class="chaos-chip" id="chaos-score">ВИРУСНОСТЬ 10K</span><span id="viral-phase" class="growth-live">● ЗАГРУЗКА...</span></div>
+          <strong id="views-count">15</strong><span class="views-label">ПРОСМОТРОВ</span>
+          <div class="growth-track"><span id="growth-progress"></span></div>
+        </div>
+        <div class="comments-box"><div class="comments-title">КОММЕНТЫ <span id="comments-count">3</span></div><div id="fake-comments" class="fake-comments"></div></div>
+        <div class="result-actions">
+            <button class="button button-primary" id="share-button" data-testid="button-share"><svg class="ui-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="m5 15 22-10-7 22-5-9Z"></path><path d="M15 18 27 5"></path></svg> ОТПРАВИТЬ ДРУГУ</button>
+           <button class="button button-ghost" id="new-meme-button" data-testid="button-new-meme"><svg class="ui-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M26 14a10 10 0 1 0 1 6"></path><path d="M26 6v8h-8"></path></svg> НОВЫЙ МЕМ</button>
+        </div>
+      </section>
+    </main>
+
+    <div id="tutorial-modal" class="modal-backdrop" hidden>
+      <div class="modal tutorial-card" role="dialog" aria-modal="true" aria-labelledby="tutorial-title">
+        <button class="modal-close" id="tutorial-close" aria-label="Закрыть">×</button>
+        <div class="modal-kicker">ПУЛЬТ ЗАПУСКА</div>
+        <h2 id="tutorial-title">Как собрать<br><span>вирусный кадр?</span></h2>
+        <div class="tutorial-intro">Твоя задача — собрать нелепую, но цельную сцену и проверить, насколько далеко она разлетится в ленте.</div>
+        <div class="tutorial-steps">
+          <div class="tutorial-step"><span class="step-number">01</span><div><b>Выбери сцену и героя</b><small>Фон задаёт настроение, герой становится центром кадра. В разделе героя сразу выбери его позу: спокойствие, танец, шок или сон.</small></div></div>
+          <div class="tutorial-step"><span class="step-number">02</span><div><b>Добавь реквизит</b><small>Нажимай на предметы, чтобы надеть их на героя. Можно собрать до пяти деталей — контраст и неожиданная связка обычно работают лучше всего.</small></div></div>
+          <div class="tutorial-step"><span class="step-number">03</span><div><b>Включи эффект</b><small>Глитч, прожарка, зум, тряска и другие эффекты меняют характер ролика. Сочетай их, если хочешь поднять градус безумия.</small></div></div>
+          <div class="tutorial-step"><span class="step-number">04</span><div><b>Напиши подпись</b><small>Короткая фраза появляется прямо в кадре. Подпись связывает героя и реквизит в шутку — до 48 символов, без длинных объяснений.</small></div></div>
+        </div>
+        <div class="tutorial-guide">
+          <h3>Чек-лист перед съёмкой</h3>
+          <ul><li>Есть герой и выбранная поза?</li><li>В кадре хотя бы один предмет и эффект?</li><li>Подпись объясняет, что здесь происходит?</li></ul>
+          <p><strong>Вирусность</strong> растёт за счёт количества деталей, мощных эффектов и удачного сочетания. После кнопки «Снять тренд» публикация выходит в игровую ленту: счётчик просмотров разгоняется, появляются реакции и комментарии.</p>
+          <p>На экране результата можно поставить лайк, подписаться на канал, отправить мем другу или вернуться в редактор. Нажми «Новый мем», чтобы начать следующую сессию.</p>
+        </div>
+        <button class="button button-primary" id="tutorial-start" data-testid="button-tutorial-start">ПОНЯТНО, ПОГНАЛИ!</button>
+      </div>
+    </div>
+    <div id="share-modal" class="modal-backdrop" hidden>
+      <div class="modal share-card" role="dialog" aria-modal="true" aria-labelledby="share-title">
+        <button class="modal-close" id="share-close" aria-label="Закрыть окно отправки" title="Закрыть"><svg class="close-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="m8 8 16 16M24 8 8 24"></path></svg></button>
+        <div class="share-spark"><svg class="share-send-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="m5 15 22-10-7 22-5-9Z"></path><path d="M15 18 27 5"></path></svg></div><h2 id="share-title">Мем готов!<br><span>Отправь его другу</span></h2>
+        <div class="share-link"><span id="share-url">memefactory.fun/m/LOL-2026</span><button id="copy-button" data-testid="button-copy">КОПИРОВАТЬ</button></div>
+        <button class="button button-primary" id="native-share-button" data-testid="button-native-share"><svg class="ui-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="m5 15 22-10-7 22-5-9Z"></path><path d="M15 18 27 5"></path></svg> ОТПРАВИТЬ</button>
+        <button class="button yandex-button" id="yandex-share-button" data-testid="button-yandex-share">ОТПРАВИТЬ ЧЕРЕЗ Я.ИГРЫ</button>
+        <p id="share-status" class="share-status">Ссылка живёт вечно. Ну почти.</p>
+      </div>
+    </div>
+    <div id="profile-name-modal" class="modal-backdrop" hidden>
+      <div class="modal profile-edit-card" role="dialog" aria-modal="true" aria-labelledby="profile-edit-title">
+        <button class="modal-close" id="profile-edit-close" aria-label="Закрыть">×</button>
+        <div class="modal-kicker">НАСТРОЙКА КАНАЛА</div>
+        <h2 id="profile-edit-title">Как тебя<br><span>называть?</span></h2>
+        <label class="profile-name-label" for="profile-name-input">ИГРОВОЙ НИК</label>
+        <input id="profile-name-input" class="profile-name-input" maxlength="16" autocomplete="nickname" placeholder="Например, МемЛорд">
+        <p class="profile-edit-hint">Ник виден только в твоём игровом профиле.</p>
+        <button class="button button-primary" id="profile-name-save">СОХРАНИТЬ НИК</button>
+      </div>
+    </div>
+    <div id="settings-modal" class="modal-backdrop" hidden>
+      <div class="modal settings-card" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+        <button class="modal-close" id="settings-close" aria-label="Закрыть">×</button>
+        <div class="modal-kicker">ПАНЕЛЬ БЛОГЕРА</div>
+        <h2 id="settings-title">Настройки<br><span>мемодела</span></h2>
+        <div class="settings-list">
+           <button class="setting-row" data-setting="sfx"><span class="setting-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M5 13h5l7-6v18l-7-6H5Z"></path><path d="M22 12c2 2 2 6 0 8m4-11c4 4 4 10 0 14"></path></svg></span><span class="setting-copy"><b>Звук</b><small>Клики и громкие вехи</small></span><span class="setting-value" id="setting-sfx-value"></span><span class="setting-switch" id="setting-sfx-switch"></span></button>
+           <button class="setting-row" data-setting="music"><span class="setting-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M12 24V7l14-3v17"></path><circle cx="8" cy="24" r="4"></circle><circle cx="22" cy="21" r="4"></circle></svg></span><span class="setting-copy"><b>Музыка</b><small>Тикер Original Sound</small></span><span class="setting-value" id="setting-music-value"></span><span class="setting-switch" id="setting-music-switch"></span></button>
+           <button class="setting-row" data-setting="vibration"><span class="setting-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><rect x="10" y="5" width="12" height="22" rx="3"></rect><path d="M5 12v8m22-8v8M2 15v2m28-2v2"></path></svg></span><span class="setting-copy"><b>Вибрация</b><small id="vibration-note">Лёгкий отклик на нажатия</small></span><span class="setting-value" id="setting-vibration-value"></span><span class="setting-switch" id="setting-vibration-switch"></span></button>
+        </div>
+         <button class="button settings-danger" id="clear-progress-button"><svg class="ui-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M6 9h20m-13 0V5h6v4m-9 4v10m6-10v10m6-10v10M9 9l1 18h12l1-18"></path></svg> СБРОСИТЬ ПРОГРЕСС</button>
+         <button class="button button-ghost settings-rules-button" id="rules-button"><svg class="ui-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M8 5h16v22H8Z"></path><path d="M12 10h8m-8 5h8m-8 5h5"></path></svg> ОБ ИГРЕ / ПОЛИТИКА</button>
+         <button class="button button-primary" id="settings-close-button"><svg class="ui-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="m8 8 16 16M24 8 8 24"></path></svg> ЗАКРЫТЬ</button>
+      </div>
+    </div>
+    <div id="rules-modal" class="modal-backdrop" hidden>
+      <div class="modal rules-card" role="dialog" aria-modal="true" aria-labelledby="rules-title">
+        <button class="modal-close" id="rules-close" aria-label="Закрыть">×</button>
+        <div class="modal-kicker">МЕМ-ФАБРИКА</div>
+        <h2 id="rules-title">О игре<br><span>и приватности</span></h2>
+        <p>Игра «Мем-Фабрика» не собирает ваши личные данные. Все мемы сохраняются только в памяти вашего браузера (localStorage). Для детей 6+.</p>
+        <p>Собирай мемы только для весёлых и добрых шуток. Не добавляй личные данные и не обижай других.</p>
+        <button class="button button-primary" id="rules-close-button">ПОНЯТНО</button>
+      </div>
+    </div>
+    <div id="confirm-modal" class="modal-backdrop" hidden>
+      <div class="modal confirm-card" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+         <div class="share-spark">!</div>
+        <h2 id="confirm-title">Точно удалить<br><span>все мемы?</span></h2>
+        <p>Сохранённый прогресс и секреты исчезнут с этого устройства.</p>
+        <div class="confirm-actions"><button class="button button-ghost" id="confirm-cancel">ОТМЕНА</button><button class="button settings-danger" id="confirm-delete">УДАЛИТЬ</button></div>
+      </div>
+    </div>
+    <div id="push-notifications" class="push-notifications" aria-live="polite"></div>
+    <div id="confetti-layer" class="confetti-layer" aria-hidden="true"></div>
+     <div id="viral-badge" class="viral-badge" hidden>МЕМ-БОГ • ЛЕГЕНДА</div>
+     <div id="toast" class="unlock-toast" role="status" aria-live="polite"></div>
+    <script src="data.js"></script>
+    <script src="effects.js"></script>
+    <script src="editor.js"></script>
+    <script src="scenes.js"></script>
+    <script src="tiktok-ui.js"></script>
+    <script src="sharing.js"></script>
+    <script src="settings.js"></script>
+    <script src="profile.js"></script>
+    <script src="game.js"></script>
+  </body>
+</html>
